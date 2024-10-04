@@ -12,7 +12,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      // Realizar la petición a la API
+      // Peticion API
       const response = await fetch("http://localhost:3001/pacientes");
       const data = await response.json();
 
