@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../assets/img/icon.svg";
 
 export default function Login() {
-  const [dni, setDni] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -13,18 +13,19 @@ export default function Login() {
 
     try {
       // Peticion API
-      const response = await fetch("http://localhost:3001/pacientes");
+      const response = await fetch("http://localhost:3001/api/users");
       const data = await response.json();
 
-      const paciente = data.find(
+      const usuario = data.find(
         (p) =>
-          p.dni === dni && p.apellidos.toLowerCase() === password.toLowerCase()
+          p.email === email &&
+          p.password.toLowerCase() === password.toLowerCase()
       );
 
-      if (paciente) {
+      if (usuario) {
         navigate("/home");
       } else {
-        setError("DNI o contraseña incorrectos");
+        setError("Contraseña incorrecta");
       }
     } catch (err) {
       console.error("Error en la autenticación:", err);
@@ -54,16 +55,16 @@ export default function Login() {
                   htmlFor="dni"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Ingresar DNI
+                  Ingresar Correo
                 </label>
                 <input
                   type="text"
                   name="dni"
                   id="dni"
-                  value={dni}
-                  onChange={(e) => setDni(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Ingrese su DNI"
+                  placeholder="Ingrese su correo"
                   required
                 />
               </div>
@@ -72,7 +73,7 @@ export default function Login() {
                   htmlFor="password"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Contraseña (Apellido)
+                  Contraseña
                 </label>
                 <input
                   type="password"
@@ -80,7 +81,7 @@ export default function Login() {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Ingrese su apellido"
+                  placeholder="Ingrese su contraseña"
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                 />
